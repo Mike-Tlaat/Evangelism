@@ -1,0 +1,1018 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الدرس الأساسي الموحد - الصليب</title>
+    <!-- خط Cairo الفاخر من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* الوضع الداكن الفاخر (Premium Deep Slate) */
+        --bg-color: #070a13;
+        --mesh-bg:
+          radial-gradient(
+            at 0% 0%,
+            rgba(220, 38, 38, 0.12) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(245, 158, 11, 0.1) 0px,
+            transparent 50%
+          );
+        --glass-bg: rgba(15, 23, 42, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.05);
+        --card-inner-bg: rgba(255, 255, 255, 0.02);
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #64748b;
+        --accent-color: #f59e0b; /* ذهبي ملكي */
+        --accent-glow: rgba(245, 158, 11, 0.25);
+        --danger-color: #ef4444; /* أحمر تحذيري */
+        --danger-bg: rgba(239, 68, 68, 0.1);
+        --highlight-bg: rgba(245, 158, 11, 0.12);
+        --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        --nav-bg: rgba(15, 23, 42, 0.85);
+      }
+
+      [data-theme="light"] {
+        /* الوضع الفاتح الملكي (Premium Light Slate) */
+        --bg-color: #f1f5f9;
+        --mesh-bg:
+          radial-gradient(
+            at 0% 0%,
+            rgba(239, 68, 68, 0.06) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(217, 119, 6, 0.06) 0px,
+            transparent 50%
+          );
+        --glass-bg: rgba(255, 255, 255, 0.85);
+        --glass-border: rgba(15, 23, 42, 0.08);
+        --card-inner-bg: rgba(15, 23, 42, 0.02);
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #64748b;
+        --accent-color: #b45309;
+        --accent-glow: rgba(180, 83, 9, 0.15);
+        --danger-color: #dc2626;
+        --danger-bg: rgba(220, 38, 38, 0.06);
+        --highlight-bg: rgba(180, 83, 9, 0.08);
+        --shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+        --nav-bg: rgba(255, 255, 255, 0.9);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Cairo", sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        background-image: var(--mesh-bg);
+        background-attachment: fixed;
+        color: var(--text-primary);
+        min-height: 100vh;
+        padding-bottom: 80px;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+      }
+
+      /* المكونات العلوية والهيدر */
+      header {
+        max-width: 1000px;
+        margin: 50px auto 25px auto;
+        padding: 0 20px;
+        text-align: center;
+      }
+
+      .badge-container {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        padding: 8px 20px;
+        border-radius: 100px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        backdrop-filter: blur(10px);
+        box-shadow: var(--shadow);
+        letter-spacing: 0.5px;
+      }
+
+      .badge.main {
+        color: var(--accent-color);
+        border-color: var(--accent-color);
+      }
+
+      .badge.target {
+        color: #ec4899;
+        border-color: rgba(236, 72, 153, 0.4);
+        background: rgba(236, 72, 153, 0.05);
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+        background: linear-gradient(
+          135deg,
+          var(--text-primary) 40%,
+          var(--text-secondary)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* صندوق التحذير الإلزامي الصارم */
+      .mandatory-alert {
+        background: var(--danger-bg);
+        border: 2px solid var(--danger-color);
+        border-radius: 20px;
+        padding: 25px;
+        max-width: 900px;
+        margin: 0 auto 40px auto;
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mandatory-alert::before {
+        content: "!";
+        position: absolute;
+        top: -20px;
+        right: -10px;
+        font-size: 10rem;
+        font-weight: 900;
+        color: var(--danger-color);
+        opacity: 0.06;
+        pointer-events: none;
+      }
+
+      .mandatory-title {
+        color: var(--danger-color);
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .mandatory-desc {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      /* زر تحويل المظهر Floating Button */
+      .theme-toggle {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        z-index: 1000;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        padding: 14px;
+        border-radius: 50%;
+        cursor: pointer;
+        backdrop-filter: blur(12px);
+        box-shadow: var(--shadow);
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .theme-toggle:hover {
+        transform: rotate(20deg) scale(1.08);
+        border-color: var(--accent-color);
+      }
+
+      /* شريط التبويبات المتطور */
+      nav {
+        position: sticky;
+        top: 25px;
+        max-width: 900px;
+        margin: 0 auto 45px auto;
+        background: var(--nav-bg);
+        border: 1px solid var(--glass-border);
+        padding: 8px;
+        border-radius: 20px;
+        backdrop-filter: blur(25px);
+        z-index: 999;
+        box-shadow: var(--shadow);
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+      }
+
+      .nav-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        padding: 14px 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 14px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+      }
+
+      .nav-btn:hover {
+        color: var(--text-primary);
+        background: var(--card-inner-bg);
+      }
+
+      .nav-btn.active {
+        background: var(--accent-color);
+        color: #000 !important;
+        font-weight: 800;
+        box-shadow: 0 8px 20px var(--accent-glow);
+      }
+
+      /* حاوية التبويبات والمحتويات */
+      main {
+        max-width: 940px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section-content {
+        display: none;
+        animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      .section-content.active {
+        display: block;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* كروت الجلاسمورفيزم الفاخرة */
+      .glass-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 40px;
+        margin-bottom: 30px;
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow);
+      }
+
+      .card-header {
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: 18px;
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--accent-color);
+      }
+
+      .card-subtitle {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      /* القوائم المنسقة بدقة وهندسة العرض */
+      ul.structured-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      ul.structured-list li {
+        position: relative;
+        padding-right: 32px;
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        text-align: justify;
+      }
+
+      ul.structured-list li::before {
+        content: "✦";
+        position: absolute;
+        right: 4px;
+        top: 0;
+        color: var(--accent-color);
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+
+      /* الصناديق النصية المظللة والفرعية */
+      .highlight-box {
+        background: var(--highlight-bg);
+        border-right: 4px solid var(--accent-color);
+        padding: 20px 25px;
+        border-radius: 6px 16px 16px 6px;
+        margin: 25px 0;
+        font-size: 1.15rem;
+        line-height: 1.9;
+      }
+
+      .sub-section-title {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 35px 0 20px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed var(--glass-border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .sub-section-title::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background: var(--accent-color);
+        border-radius: 50%;
+      }
+
+      .inline-bold {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      /* نظام الترقيم الحسابي والهندسي المتطور */
+      .numeric-container {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        margin-top: 15px;
+      }
+
+      .numeric-block {
+        display: flex;
+        gap: 22px;
+        padding: 18px;
+        border-radius: 16px;
+        background: var(--card-inner-bg);
+        align-items: flex-start;
+        border: 1px solid transparent;
+        transition: all 0.25s ease;
+      }
+
+      .numeric-block:hover {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--glass-border);
+      }
+
+      [data-theme="light"] .numeric-block:hover {
+        background: rgba(0, 0, 0, 0.02);
+      }
+
+      .numeric-id {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        color: var(--accent-color);
+        min-width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1rem;
+        box-shadow: var(--shadow);
+      }
+
+      .numeric-text {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        color: var(--text-primary);
+        flex: 1;
+        padding-top: 3px;
+        text-align: justify;
+      }
+
+      /* الشواهد والآيات الكتابية */
+      .scripture-quote {
+        font-style: normal;
+        border-left: none;
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.04),
+          rgba(15, 23, 42, 0.01)
+        );
+        border: 1px dashed var(--accent-color);
+        border-radius: 16px;
+        padding: 25px;
+        margin: 20px 0;
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.9;
+      }
+
+      .scripture-ref {
+        display: block;
+        font-size: 0.95rem;
+        color: var(--accent-color);
+        margin-top: 10px;
+        font-weight: 700;
+      }
+
+      /* الهواتف والشاشات الصغيرة */
+      @media (max-width: 768px) {
+        header {
+          margin: 35px auto 20px auto;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+        .mandatory-alert {
+          padding: 18px;
+          border-radius: 14px;
+        }
+        .mandatory-title {
+          font-size: 1.15rem;
+        }
+        .mandatory-desc {
+          font-size: 0.95rem;
+        }
+        nav {
+          top: 15px;
+          margin-bottom: 30px;
+          padding: 6px;
+          flex-wrap: wrap;
+        }
+        .nav-btn {
+          padding: 10px 6px;
+          font-size: 0.9rem;
+        }
+        .glass-card {
+          padding: 25px 20px;
+          border-radius: 20px;
+        }
+        ul.structured-list li,
+        .numeric-text,
+        .highlight-box {
+          font-size: 1.05rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- زر تبديل وضع الإضاءة التفاعلي -->
+    <button class="theme-toggle" id="themeToggle" title="تغيير المظهر">
+      <svg
+        id="sunIcon"
+        style="display: none"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <path
+          d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 18.36l1.42-1.42M18.36 4.22l1.42-1.42"
+        ></path>
+      </svg>
+      <svg
+        id="moonIcon"
+        width="22"
+        height="22"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+      >
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+
+    <!-- الهيدر الرئيسي وتحديد الهوية والجمهور الموحد -->
+    <header>
+      <div class="badge-container">
+        <span class="badge main">درس الصليب - الدرس الاساسي</span>
+        <span class="badge target">موجه لجميع الفئات</span>
+      </div>
+      <h1>دراسة اللاهوت والصليب الموحدة</h1>
+    </header>
+
+    <!-- صندوق الإلزامية التحذيري الصارم -->
+    <div class="mandatory-alert">
+      <div class="mandatory-title">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+          ></path>
+        </svg>
+        تنبيه إلزامي صارم وموحد لجميع الأعضاء
+      </div>
+      <div class="mandatory-desc">
+        هذا هو الدرس الأساسي والركيزة الأولى لجميع الفئات والقطاعات؛ وبدونه
+        وبدون اجتيازه بشكل كامل، لا يمكن للفرد الاشتراك أو الدخول في أي نشاط أو
+        خدمة أو ممارسة جماعية مهما كانت طبيعتها أو مستواها مهرجان الكرازة.
+      </div>
+    </div>
+
+    <!-- شريط التنقل المتطور والثابت للتبويبات -->
+    <nav>
+      <button class="nav-btn active" onclick="switchTab('historical-axis')">
+        الخلفية والتاريخ
+      </button>
+      <button class="nav-btn" onclick="switchTab('dogmatic-axis')">
+        المحور العقيدي
+      </button>
+      <button class="nav-btn" onclick="switchTab('liturgical-axis')">
+        المحور الطقسي
+      </button>
+      <button class="nav-btn" onclick="switchTab('spiritual-axis')">
+        المحور الروحي
+      </button>
+    </nav>
+
+    <!-- حاوية عرض المحتوى النصي الممنهج هندسياً -->
+    <main>
+      <!-- ================= التبويب الأول: الخلفية التاريخية ومفهوم الصليب ================= -->
+      <div id="historical-axis" class="section-content active">
+        <div class="glass-card">
+          <div class="card-header">
+            <span class="card-title">أولاً: خلفية تاريخية ومفهوم الصليب</span>
+            <span class="card-subtitle">تأصيل الحدث ونظرة المؤمنين</span>
+          </div>
+
+          <ul class="structured-list">
+            <li>
+              <span class="inline-bold">الاكتشاف التاريخي:</span> تم اكتشاف
+              الصليب منذ 17 قرناً على يد الملكة هيلانة عام 326م.
+            </li>
+            <li>
+              <span class="inline-bold">الاحتفالات الكنسية:</span> تُعيد الكنيسة
+              للصليب مرتين سنوياً.
+            </li>
+            <li>
+              <span class="inline-bold">أساس القوة:</span> يستمد الصليب قوته
+              وكرامته من السيد المسيح الذي علق عليه؛ والمسيحية تأسست على أساس
+              الصليب وبالصليب.
+            </li>
+          </ul>
+
+          <div class="sub-section-title">نظرة المؤمنين للصليب</div>
+          <ul class="structured-list">
+            <li>يراه البعض سبباً للحياة، النصرة، الخلاص، والقيامة.</li>
+            <li>يراه آخرون بمفهوم احتمال الضيقات والمتاعب.</li>
+          </ul>
+
+          <div class="sub-section-title">الشواهد الكتابية المذكورة</div>
+
+          <div class="scripture-quote">
+            "ناظرين الى رئيس الايمان ومكمله يسوع الذي من اجل السرور الموضوع
+            امامه احتمل الصليب مستهينا بالخزي"
+            <span class="scripture-ref">(عب 12: 2)</span>
+          </div>
+
+          <div class="scripture-quote">
+            "الذي افرح في الامي لاجلكم"
+            <span class="scripture-ref">(كو 1: 24)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= التبويب الثاني: المحور العقيدي واللاهوتي ================= -->
+      <div id="dogmatic-axis" class="section-content">
+        <div class="glass-card">
+          <div class="card-header">
+            <span class="card-title">ثانياً: محاور الصليب الثلاثة</span>
+            <span class="card-subtitle"
+              >المحور الأول: الصليب عقيديّاً (قصة السقوط والفداء)</span
+            >
+          </div>
+
+          <div class="highlight-box">
+            <span class="inline-bold">قصة السقوط الأولى:</span> وضع الله في
+            البدء آدم وحواء في الجنة وأوصاهما ألا يأكلا من شجرة معرفة الخير
+            والشر، ولكنهما عصيا كلام الله، وكانت النتيجة السقوط في الخطية
+            واستحقاق حكم الموت.
+          </div>
+
+          <div class="sub-section-title">نتائج الأكل من الشجرة</div>
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">سقوط آدم وحواء تحت حكم الموت.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">فساد طبيعتهما المقدسة.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">
+                وراثة البشرية للخطية الأصلية وفساد الطبيعة.
+              </div>
+            </div>
+          </div>
+
+          <div class="sub-section-title">
+            محددات حتمية الحل الأقنومي (لماذا لم يمت آدم أو يسامحه الله مباشرة؟)
+          </div>
+          <ul class="structured-list">
+            <li>
+              <span class="inline-bold">موت آدم لا يصح؛</span> لأن محبة الله
+              لآدم كبيرة وعظيمة.
+            </li>
+            <li>
+              <span class="inline-bold"
+                >مسامحة الله لآدم دون مقابل لا تصح؛</span
+              >
+              لأنها تخل بـ "عدل الله" الذي حكم مسبقاً بالموت في حال المخالفة،
+              كما أن الطبيعة البشرية أصبحت موبوءة وممتلئة بالخطايا عقب السقوط.
+            </li>
+          </ul>
+
+          <div class="highlight-box" style="border-right-color: #ef4444">
+            <span class="inline-bold">الحل الوحيد (الفداء):</span> أن يموت فادٍ
+            آخر بديل عن آدم ليتحقق العدل الإلهي وتتم الرحمة؛ وبذلك ينال العدل
+            حقه من الفادي، وينال البشر الرحمة من الله ويتخلصون من حكم الموت.
+          </div>
+
+          <div class="sub-section-title">1. مواصفات وشروط الفادي</div>
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">
+                أن يكون إنساناً لأن الإنسان هو الذي أخطأ.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">
+                أن يموت بإرادته لأن أجرة الخطية هي الموت.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">
+                أن يكون بلا خطية: لأن الخاطئ يحتاج إلى من يفديه.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">4</div>
+              <div class="numeric-text">
+                أن يكون غير محدود: لأن خطية آدم غير محدودة كونها موجهة ضد الله
+                غير المحدود.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">5</div>
+              <div class="numeric-text">
+                أن يكون خالقاً: لكي يجدد الطبيعة البشرية الفاسدة ويعيد خلقها مرة
+                أخرى.
+              </div>
+            </div>
+          </div>
+
+          <p
+            class="numeric-text"
+            style="
+              margin: 25px 0;
+              padding: 15px;
+              background: rgba(255, 255, 255, 0.01);
+              border-radius: 12px;
+            "
+          >
+            <span class="inline-bold">تحقيق الفداء:</span> هذا ما حدث بتجسد الله
+            الكلمة وحلوله في أحشاء العذراء مريم، فولد وعاش كإنسان شابهنا في
+            ناسوتنا وظهرت قوة لاهوته في تعاليمه اللانهائية ومعجزاته، ثم تألم
+            وصلب ومات وقام وصعد إلى أعالي السماوات ليغفر خطايانا ويمنحنا الحياة
+            الأبدية.
+          </p>
+
+          <div class="sub-section-title">
+            2. أسباب اختيار الموت بالصليب تحديداً
+          </div>
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">ليرفع اللعنة عنا.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">ليحمل حكم الموت نيابة عنا.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">ليسفك دمه لفدائنا.</div>
+            </div>
+          </div>
+
+          <div class="sub-section-title">
+            3. فكر القديس أثناسيوس في اختيار الصليب كميتة للمسيح
+          </div>
+          <ul class="structured-list">
+            <li>
+              ليكون الموت علنياً أمام الجميع للشهادة بتأكيد حقيقة القيامة
+              اللاحقة.
+            </li>
+            <li>لحفظ جسده سليماً كاملاً دون تمزيق أو تقطيع.</li>
+            <li>
+              ليطهر الهواء والجو من الأرواح الشريرة ويفتح للمؤمنين طريق
+              السماوات.
+            </li>
+            <li>ليموت باسطاً ذراعيه ليجمع معاً الأمم واليهود في شخصه المحب.</li>
+          </ul>
+
+          <div class="sub-section-title">
+            4. أسباب ومعاني رشم الصليب التعليم الصحيح لرشم الصليب
+          </div>
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">
+                إعلان عقيدة الثالوث القدوس الآب والابن والروح القدس، ووحدانية
+                الله كإله واحد.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">
+                إعلان عقيدة التجسد والفداء وحلول الأقنوم في بطن العذراء.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">
+                تذكر محبة الله الفائقة الذي سلم ابنه للموت على الصليب لأجلنا.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">4</div>
+              <div class="numeric-text">
+                تذكّر خطايانا التي حملها المسيح عنا على الصليب.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">5</div>
+              <div class="numeric-text">
+                إعلان التبعية للمصلوب والمجاهرة بالإيمان جهراً وانحناء بصليب
+                ربنا يسوع المسيح.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">6</div>
+              <div class="numeric-text">
+                نوال الغلبة والتميز للمسيحي بالمسيح.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">7</div>
+              <div class="numeric-text">
+                الصليب هو علامة المصالحة بين الله والبشر.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">8</div>
+              <div class="numeric-text">
+                الصليب يمنح المؤمنين القوة الروحية.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">9</div>
+              <div class="numeric-text">
+                الإيمان بأن كافة بركات العهد الجديد الروحية هي بفضل صليب مخلصنا.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= التبويب الثالث: المحور الطقسي والليتورجي ================= -->
+      <div id="liturgical-axis" class="section-content">
+        <div class="glass-card">
+          <div class="card-header">
+            <span class="card-title">ثانياً: محاور الصليب الثلاثة</span>
+            <span class="card-subtitle">المحور الثاني: الصليب طقسياً</span>
+          </div>
+
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">
+                نبتدئ به كافة صلواتنا الكنسية والشخصية.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">يوضع فوق منارات الكنائس.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">يُعلق على صدور المؤمنين.</div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">4</div>
+              <div class="numeric-text">
+                يستخدم في ممارسة جميع الأسرار الكنسية وكل الصلوات.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">5</div>
+              <div class="numeric-text">
+                يتخذ شكل الصليب كأحد الأنظمة والأشكال الأساسية في بناء الكنائس.
+              </div>
+            </div>
+
+            <div class="numeric-block">
+              <div class="numeric-id">6</div>
+              <div class="numeric-text">
+                <span class="inline-bold"
+                  >تُعيد الكنيسة للصليب عيدين طقسيين:</span
+                ><br />
+                • <span class="inline-bold">العيد الأول (17) توت:</span> تذكار
+                تدشين كنيسة القيامة في أورشليم وتكريس الصليب في أيام الملكة
+                هيلانة.<br />
+                • <span class="inline-bold">العيد الثاني (10) برمهات:</span> عيد
+                اكتشاف الصليب المجيد.
+              </div>
+            </div>
+
+            <div class="numeric-block">
+              <div class="numeric-id">7</div>
+              <div class="numeric-text">
+                ورود الصليب في النصوص الليتورجية (مثل لحن "شيري بيكستافروس" -
+                السلام للصليب - خشبة المسيح فخرنا).
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">8</div>
+              <div class="numeric-text">
+                الإعلان عن الإيمان بالصليب كعلامة فداء ومصالحة مع الله في
+                ذكصولوجية عيد الصليب.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">9</div>
+              <div class="numeric-text">
+                ورود الإشارة إليه في إبصالية يوم الجمعة ("أعطى علامة لعبيده
+                الذين يخافونه").
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">10</div>
+              <div class="numeric-text">
+                يوضع الصليب على المذبح المقدس أثناء القداس الإلهي.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">11</div>
+              <div class="numeric-text">
+                يُرشم الصليب على الطعام والشراب لكي يتبارك، وهو علامة حماية وقوة
+                في كل مواقف وتفاصيل الحياة.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= التبويب الرابع: الجانب والمحور الروحي ================= -->
+      <div id="spiritual-axis" class="section-content">
+        <div class="glass-card">
+          <div class="card-header">
+            <span class="card-title">ثانياً: محاور الصليب الثلاثة</span>
+            <span class="card-subtitle"
+              >المحور الثالث: الصليب روحياً (مفهوم التجارب والآلام)</span
+            >
+          </div>
+
+          <div class="highlight-box">
+            <span class="inline-bold">أسباب سماح الله بالتجارب:</span> يسمح الله
+            بالتجارب والآلام الروحية لأربعة مقاصد أساسية:
+          </div>
+
+          <div class="numeric-container">
+            <div class="numeric-block">
+              <div class="numeric-id">1</div>
+              <div class="numeric-text">
+                <span class="inline-bold">تجارب للتأديب</span> تؤدي إلى التوبة.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">2</div>
+              <div class="numeric-text">
+                <span class="inline-bold">تجارب للتزكية</span>.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">3</div>
+              <div class="numeric-text">
+                <span class="inline-bold">تجارب للتنقية</span>.
+              </div>
+            </div>
+            <div class="numeric-block">
+              <div class="numeric-id">4</div>
+              <div class="numeric-text">
+                <span class="inline-bold">تجارب للوقاية</span>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- نظام المحاكاة والجافا سكريبت لتغيير التبويبات والمظهر بشكل تفاعلي بالكامل -->
+    <script>
+      // دالة تحويل التبويبات بنعومة وسلاسة فائقة
+      function switchTab(tabId) {
+        const sections = document.querySelectorAll(".section-content");
+        sections.forEach((sec) => sec.classList.remove("active"));
+
+        const buttons = document.querySelectorAll(".nav-btn");
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        document.getElementById(tabId).classList.add("active");
+        event.currentTarget.classList.add("active");
+
+        // نقل العرض التلقائي لأعلى الشاشة مع الحفاظ على الراحة البصرية
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // إعدادات تبديل الوضع الليلي والنهاري التلقائي والمخصص
+      const themeToggleBtn = document.getElementById("themeToggle");
+      const sunIcon = document.getElementById("sunIcon");
+      const moonIcon = document.getElementById("moonIcon");
+      const htmlElement = document.documentElement;
+
+      themeToggleBtn.addEventListener("click", () => {
+        const currentTheme = htmlElement.getAttribute("data-theme");
+
+        if (currentTheme === "dark") {
+          htmlElement.setAttribute("data-theme", "light");
+          sunIcon.style.display = "block";
+          moonIcon.style.display = "none";
+        } else {
+          htmlElement.setAttribute("data-theme", "dark");
+          sunIcon.style.display = "none";
+          moonIcon.style.display = "block";
+        }
+      });
+
+      // تشغيل الافتراضيات الهندسية عند الفتح الأولي
+      document.addEventListener("DOMContentLoaded", () => {
+        sunIcon.style.display = "none";
+        moonIcon.style.display = "block";
+      });
+    </script>
+  </body>
+</html>

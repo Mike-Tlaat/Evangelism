@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>المنصة التعليمية الرقمية - مهرجان الكرازة</title>
+    <!-- خط Cairo الحديث بأوزان متعددة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        /* الألوان والهوية البصرية الفاخرة (Deep Premium Cyber Slate) */
+        --bg-main: #0a0f1d;
+        --glass-panel: rgba(15, 23, 42, 0.45);
+        --glass-border: rgba(255, 255, 255, 0.05);
+        --glass-border-hover: rgba(99, 102, 241, 0.4);
+
+        /* ألوان النيون والتوهج الساحر */
+        --primary-accent: #6366f1; /* إنديغو مشع */
+        --secondary-accent: #f59e0b; /* ذهبي ملكي */
+        --tertiary-accent: #10b981; /* زمردي حديث */
+        --accent-glow: rgba(99, 102, 241, 0.2);
+        
+        /* ألوان النصوص المصقولة */
+        --text-main: #f8fafc;
+        --text-sub: #cbd5e1;
+        --text-muted: #64748b;
+
+        --blur-radius: 30px;
+        --transition-elastic: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* تخصيص السكرول بار ليناسب فخامة التصميم */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-main);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        border: 2px solid var(--bg-main);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-accent);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Cairo", sans-serif;
+      }
+
+      body {
+        background-color: var(--bg-main);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow-x: hidden;
+        position: relative;
+      }
+
+      /* تأثير شبكة الـ Aurora السائلة والمحسنة في الخلفية */
+      .aurora-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(160px);
+        opacity: 0.18;
+        mix-blend-mode: plus-lighter;
+        animation: floatAnimation 16s infinite alternate ease-in-out;
+      }
+
+      .blob-1 {
+        top: -15%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: var(--primary-accent);
+      }
+
+      .blob-2 {
+        bottom: -15%;
+        right: -10%;
+        width: 550px;
+        height: 550px;
+        background: var(--secondary-accent);
+        animation-delay: -5s;
+        animation-duration: 20s;
+      }
+
+      .blob-3 {
+        top: 40%;
+        left: 50%;
+        width: 400px;
+        height: 400px;
+        background: var(--tertiary-accent);
+        animation-delay: -3s;
+        animation-duration: 14s;
+        opacity: 0.1;
+      }
+
+      @keyframes floatAnimation {
+        0% { transform: translateY(0) scale(1) rotate(0deg); }
+        50% { transform: translateY(60px) scale(1.1) rotate(30deg); }
+        100% { transform: translateY(-20px) scale(0.95) rotate(-15deg); }
+      }
+
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 50px 24px;
+        flex-grow: 1;
+      }
+
+      /* الهيدر الزجاجي المطور */
+      .app-header {
+        background: var(--glass-panel);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px;
+        padding: 35px 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        backdrop-filter: blur(var(--blur-radius)) saturate(180%);
+        -webkit-backdrop-filter: blur(var(--blur-radius)) saturate(180%);
+        margin-bottom: 50px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        position: relative;
+      }
+
+      .header-title-area {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .app-header h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        background: linear-gradient(135deg, #ffffff 30%, #a5b4fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .app-header p {
+        color: var(--text-sub);
+        font-size: 1.05rem;
+        margin-top: 8px;
+        font-weight: 500;
+        opacity: 0.85;
+      }
+
+      /* زرار الرجوع الذكي الفاخر كأنه كبسولة مضيئة */
+      .header-back-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        color: var(--text-main);
+        padding: 14px 28px;
+        border-radius: 20px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(20px);
+        transition: var(--transition-elastic);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+
+      .header-back-btn svg {
+        stroke: var(--text-main);
+        width: 20px;
+        height: 20px;
+        transition: var(--transition-smooth);
+      }
+
+      .header-back-btn.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+      }
+
+      .header-back-btn:hover {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
+      }
+
+      .header-back-btn:hover svg {
+        transform: translateX(6px); /* تحريك السهم لليمين توافقاً مع الـ RTL للرجوع */
+      }
+
+      /* نظام الأنيميشن المصقول لتغيير الشاشات */
+      .view-section {
+        display: none;
+        animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .view-section.active {
+        display: block;
+      }
+
+      @keyframes slideUpFade {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* شبكة الكروت الهندسية الاستجابة */
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 35px;
+      }
+
+      /* الكرت الجلاسمورفيزم فائق النقاء والمؤثرات */
+      .modern-card {
+        background: var(--glass-panel);
+        border: 1px solid var(--glass-border);
+        border-radius: 32px;
+        padding: 45px 40px;
+        cursor: pointer;
+        backdrop-filter: blur(var(--blur-radius)) saturate(180%);
+        -webkit-backdrop-filter: blur(var(--blur-radius)) saturate(180%);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.02);
+        transition: var(--transition-elastic);
+      }
+
+      /* طبقة لمعان داخلية خفيفة */
+      .modern-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 60%);
+        pointer-events: none;
+      }
+
+      /* تفاعلات التحويم والـ Glow المتناسق */
+      .modern-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        border-color: var(--glass-border-hover);
+        box-shadow:
+          0 40px 70px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(99, 102, 241, 0.12);
+      }
+
+      .modern-card:active {
+        transform: translateY(-3px) scale(0.99);
+      }
+
+      /* خط إضاءة نيون جانبي مخصص للروابط المباشرة الخارجية */
+      .modern-card.action-link {
+        border-right: 5px solid rgba(245, 158, 11, 0.2);
+      }
+      .modern-card.action-link:hover {
+        border-right-color: var(--secondary-accent);
+        box-shadow:
+          0 40px 70px rgba(0, 0, 0, 0.5),
+          0 0 40px rgba(245, 158, 11, 0.12);
+      }
+
+      /* حاوية الأيقونات المتوهجة بشكل رائع */
+      .icon-wrapper {
+        width: 64px;
+        height: 64px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 28px;
+        transition: var(--transition-smooth);
+      }
+
+      .modern-card:hover .icon-wrapper {
+        background: rgba(99, 102, 241, 0.15);
+        border-color: var(--primary-accent);
+        box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+      }
+
+      .modern-card.action-link:hover .icon-wrapper {
+        background: rgba(245, 158, 11, 0.15);
+        border-color: var(--secondary-accent);
+        box-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
+      }
+
+      .icon-wrapper svg {
+        width: 28px;
+        height: 28px;
+        stroke: #e2e8f0;
+        fill: none;
+        transition: var(--transition-elastic);
+      }
+
+      .modern-card:hover .icon-wrapper svg {
+        stroke: var(--primary-accent);
+        transform: scale(1.1) rotate(-8deg);
+      }
+
+      .modern-card.action-link:hover .icon-wrapper svg {
+        stroke: var(--secondary-accent);
+      }
+
+      /* هندسة وعناوين الكروت */
+      .card-title {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: var(--text-main);
+        line-height: 1.4;
+        transition: var(--transition-smooth);
+      }
+
+      .modern-card:hover .card-title {
+        color: #ffffff;
+      }
+
+      .card-description {
+        font-size: 0.98rem;
+        color: #94a3b8;
+        margin-top: 12px;
+        font-weight: 500;
+        line-height: 1.7;
+        margin-bottom: 20px; /* لترك مساحة كافية للسهم الجانبي */
+      }
+
+      /* مؤشر السهم الذكي - تم تعديل هوامشه لليسار في الـ RTL بدقة */
+      .card-arrow-indicator {
+        position: absolute;
+        bottom: 35px;
+        left: 40px;
+        opacity: 0;
+        transform: translateX(-15px);
+        transition: var(--transition-elastic);
+      }
+
+      .card-arrow-indicator svg {
+        width: 22px;
+        height: 22px;
+        stroke: var(--primary-accent);
+      }
+
+      .modern-card:hover .card-arrow-indicator {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .modern-card.action-link:hover .card-arrow-indicator svg {
+        stroke: var(--secondary-accent);
+      }
+
+      /* فوتر نظيف فائق الفخامة */
+      .custom-footer {
+        background: rgba(4, 6, 12, 0.9);
+        border-top: 1px solid var(--glass-border);
+        padding: 40px 24px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        margin-top: 100px;
+      }
+
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 25px;
+      }
+
+      .footer-code-side {
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 0.95rem;
+        color: #94a3b8;
+        font-weight: 500;
+      }
+
+      .footer-code-side span {
+        color: var(--primary-accent);
+        font-weight: 700;
+      }
+
+      .footer-text-side {
+        font-size: 0.98rem;
+        color: #94a3b8;
+        font-weight: 600;
+        letter-spacing: -0.2px;
+      }
+
+      /* شاشات الهواتف والتجاوب الاحترافي الكامل */
+      @media (max-width: 768px) {
+        .container {
+          padding: 30px 16px;
+        }
+        .app-header {
+          flex-direction: column-reverse;
+          align-items: flex-start;
+          gap: 25px;
+          padding: 35px;
+          border-radius: 24px;
+        }
+        .header-back-btn {
+          align-self: flex-end;
+          padding: 12px 22px;
+          width: 100%;
+          justify-content: center;
+        }
+        .cards-grid {
+          grid-template-columns: 1fr;
+          gap: 25px;
+        }
+        .modern-card {
+          padding: 40px 30px;
+          border-radius: 24px;
+        }
+        .card-arrow-indicator {
+          left: 30px;
+          opacity: 1;
+          transform: translateX(0); /* يظهر دائمًا على الموبايل لسهولة اللمس */
+        }
+        .footer-container {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- حاوية الـ Aurora ثلاثية الكتل للمشهد الخلفي المتقدم -->
+    <div class="aurora-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+      <!-- الهيدر الزجاجي الرئيسي المتزامن بالكامل -->
+      <header class="app-header">
+        <div class="header-title-area">
+          <h1 id="dynamic-title">مهرجان الكرازة</h1>
+          <p id="dynamic-desc">إدارة وتنظيم محتويات مهرجان الكرازة</p>
+        </div>
+
+        <button
+          class="header-back-btn"
+          id="globalBackBtn"
+          onclick="navigateBack()"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            stroke-width="2.5"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <!-- السهم يشير لليمين في وضع الـ RTL ليدل على الرجوع للخلف بشكل صحيح وعلمي -->
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+          رجوع
+        </button>
+      </header>
+
+      <!-- ================= الشاشة 1: القائمة الرئيسية ================= -->
+      <div id="view-home" class="view-section active">
+        <div class="cards-grid">
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-basic-lesson',
+                'الدرس الأساسي',
+                'الشروحات والامتحانات التفاعلية المقررة',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path
+                  d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                ></path>
+              </svg>
+            </div>
+            <div class="card-title">الدرس الأساسي</div>
+            <div class="card-description">
+              الدخول إلى الشروحات التفصيلية ونظام التقييمات الشامل للدرس الإلزامي.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-memorization',
+                'قسم المحفوظات',
+                'المستويات الطقسية والنصوص المقررة',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المحفوظات</div>
+            <div class="card-description">
+              تصفح النصوص والصلوات والألحان المقررة لجميع المراحل العمرية المختلفة.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 2: تفريعات الدرس الأساسي ================= -->
+      <div id="view-basic-lesson" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card action-link"
+            onclick="openLink('Basic_lesson/Basic_lesson.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h6a4 4 0 0 0-4 4v14a3 3 0 0 1-3-3H22z"></path>
+              </svg>
+            </div>
+            <div class="card-title">شرح الدرس الأساسي</div>
+            <div class="card-description">
+              فتح ملف المحتوى التعليمي، القراءة والاطلاع المباشر على المتون الشاملة.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('Basic_lesson/mcq.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="9 11 12 14 22 4"></polyline>
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+              </svg>
+            </div>
+            <div class="card-title">أسئلة اختبارية على الدرس الأساسي</div>
+            <div class="card-description">
+              مستودع الامتحانات والتطبيقات التفاعلية لقياس الفهم والاستيعاب الفوري.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 3: تفريعات المحفوظات ================= -->
+      <div id="view-memorization" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-kraza-special',
+                'خاص بالكرازة',
+                'المناهج المعتمدة العامة للمهرجان',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="card-title">خاص بالكرازة</div>
+            <div class="card-description">
+              المناهج الموحدة الصادرة والمعتمدة رسمياً من اللجان المركزية للمهرجان.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-church-special',
+                'خاص بالكنيسة المحليّة',
+                'المنظومة التعليمية الخاصة بسمنود',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">
+              خاص بكنيسة السيدة العذراء مريم والشهيد أبانوب بسمنود
+            </div>
+            <div class="card-description">
+              المسارات والمقررات الداخلية المخصصة لخدمة قطاعات التربية الكنسية المحلية.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 4: تفريعات خاص بالكرازة ================= -->
+      <div id="view-kraza-special" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card action-link"
+            onclick="openLink('secondary/level1.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+              </svg>
+            </div>
+            <div class="card-title">محفوظات ثانوي</div>
+            <div class="card-description">
+              المحتوى التعليمي المقرر للمستوى الأول لقطاع الثانوي العام بالكرازة.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 5: تفريعات كنيسة سمنود ================= -->
+      <div id="view-church-special" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-youths-memorization',
+                'محفوظات الشباب',
+                'مستويات مرحلة الجامعيين والخريجين',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="card-title">محفوظات شباب</div>
+            <div class="card-description">
+              تصفح مستويات التقييم الثلاثة المخصصة للشباب الجامعي بالخدمة.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card"
+            onclick="
+              navigateTo(
+                'view-secondary-memorization',
+                'محفوظات مرحلة ثانوي',
+                'المستويات الأربعة المتكاملة للتربية الكنسية',
+              )
+            "
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+            </div>
+            <div class="card-title">محفوظات ثانوي</div>
+            <div class="card-description">
+              الانتقال التدريجي عبر مستويات الدراسة الأربعة المخصصة للمرحلة الثانوية.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 6: محفوظات شباب سمنود ================= -->
+      <div id="view-youths-memorization" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card action-link"
+            onclick="openLink('youths/level1.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الأول</div>
+            <div class="card-description">
+              مقرر وتدريبات المستوى التدريجي الأول للشباب.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('youths/level2.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الثاني</div>
+            <div class="card-description">
+              مقرر وتدريبات المستوى التدريجي الثاني للشباب.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('youths/level3.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الثالث</div>
+            <div class="card-description">
+              مقرر وتدريبات المستوى التدريجي الثالث للشباب.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= الشاشة 7: محفوظات ثانوي سمنود ================= -->
+      <div id="view-secondary-memorization" class="view-section">
+        <div class="cards-grid">
+          <div
+            class="modern-card action-link"
+            onclick="openLink('secondary/level1.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الأول</div>
+            <div class="card-description">
+              مخطط وجدول دراسة المحفوظات للمستوى الأول.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('secondary/level2.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الثاني</div>
+            <div class="card-description">
+              مخطط وجدول دراسة المحفوظات للمستوى الثاني.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('secondary/level3.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الثالث</div>
+            <div class="card-description">
+              مخطط وجدول دراسة المحفوظات للمستوى الثالث.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+          
+          <div
+            class="modern-card action-link"
+            onclick="openLink('secondary/level4.html')"
+          >
+            <div class="icon-wrapper">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+              </svg>
+            </div>
+            <div class="card-title">المستوى الرابع</div>
+            <div class="card-description">
+              مخطط وجدول دراسة المحفوظات للمستوى الرابع والأخير.
+            </div>
+            <div class="card-arrow-indicator">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- الفوتر المطور بتفاصيل أدق -->
+    <footer class="custom-footer">
+      <div class="footer-container">
+        <div class="footer-code-side">
+          &lt;/&gt; Developed by <span>Michael Talaat</span> — &copy; 2026
+        </div>
+        <div class="footer-text-side">
+          من كنيسة السيدة العذراء مريم والشهيد أبانوب بسمنود
+        </div>
+      </div>
+    </footer>
+
+    <!-- منطق الـ Navigation Stack التفاعلي السلس للـ Single Page App -->
+    <script>
+      // مزامنة البيانات الافتراضية بدقة لمنع تذبذب نصوص الهيدر عند العودة للرئيسية
+      let navigationHistory = [
+        {
+          viewId: "view-home",
+          title: "مهرجان الكرازة",
+          desc: "إدارة وتنظيم محتويات مهرجان الكرازة",
+        },
+      ];
+
+      // دالة الانتقال للمستويات الفرعية
+      function navigateTo(targetViewId, newTitle, newDesc) {
+        const currentActive = document.querySelector(".view-section.active");
+        if (currentActive) {
+          currentActive.classList.remove("active");
+        }
+
+        const targetView = document.getElementById(targetViewId);
+        if (targetView) {
+          targetView.classList.add("active");
+
+          navigationHistory.push({
+            viewId: targetViewId,
+            title: newTitle,
+            desc: newDesc,
+          });
+
+          updateUIState();
+        }
+      }
+
+      // دالة العودة التراجعية للمستوى السابق
+      function navigateBack() {
+        if (navigationHistory.length > 1) {
+          const current = navigationHistory.pop();
+          document.getElementById(current.viewId).classList.remove("active");
+
+          const previous = navigationHistory[navigationHistory.length - 1];
+          document.getElementById(previous.viewId).classList.add("active");
+
+          updateUIState();
+        }
+      }
+
+      // تحديث واجهة المستخدم وحالة نصوص الهيدر وزرار الرجوع
+      function updateUIState() {
+        const currentViewState = navigationHistory[navigationHistory.length - 1];
+
+        document.getElementById("dynamic-title").innerText = currentViewState.title;
+        document.getElementById("dynamic-desc").innerText = currentViewState.desc;
+
+        const backBtn = document.getElementById("globalBackBtn");
+        if (navigationHistory.length > 1) {
+          backBtn.classList.add("show");
+        } else {
+          backBtn.classList.remove("show");
+        }
+        
+        // العودة لقمة الصفحة تلقائياً لتوفير أفضل تجربة تصفح عند تغيير الشاشات
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+
+      // تشغيل وتوجيه المسارات المباشرة
+      function openLink(url) {
+        window.location.href = url;
+      }
+    </script>
+  </body>
+</html>

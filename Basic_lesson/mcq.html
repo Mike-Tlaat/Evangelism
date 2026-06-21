@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منظومة الاختبارات التفاعلية الموحدة | الدرس الأساسي</title>
+    <!-- خط Cairo الفاخر من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #070a13;
+            --mesh-bg: radial-gradient(at 0% 0%, rgba(220, 38, 38, 0.1) 0px, transparent 50%),
+                       radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.08) 0px, transparent 50%);
+            --glass-bg: rgba(15, 23, 42, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --card-inner-bg: rgba(255, 255, 255, 0.02);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --accent-color: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.25);
+            --success-color: #10b981;
+            --success-bg: rgba(16, 185, 129, 0.1);
+            --danger-color: #ef4444;
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --mesh-bg: radial-gradient(at 0% 0%, rgba(239, 68, 68, 0.05) 0px, transparent 50%),
+                       radial-gradient(at 100% 100%, rgba(180, 83, 9, 0.05) 0px, transparent 50%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(15, 23, 42, 0.08);
+            --card-inner-bg: rgba(15, 23, 42, 0.02);
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --text-muted: #64748b;
+            --accent-color: #b45309;
+            --accent-glow: rgba(180, 83, 9, 0.15);
+            --success-color: #059669;
+            --success-bg: rgba(5, 150, 105, 0.08);
+            --danger-color: #dc2626;
+            --danger-bg: rgba(220, 38, 38, 0.06);
+            --shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: var(--mesh-bg);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 30px 20px 80px 20px;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        /* شريط العدادات العلوي الثابت البصري */
+        .scoreboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .score-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 15px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .score-card .label {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .score-card .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .score-card.correct { border-color: var(--success-color); color: var(--success-color); }
+        .score-card.incorrect { border-color: var(--danger-color); color: var(--danger-color); }
+        .score-card.progress-tracker { border-color: var(--accent-color); color: var(--accent-color); }
+
+        /* منطقة الهيدر والعناوين */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* كرت السؤال الزجاجي */
+        .quiz-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 35px;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .section-badge {
+            align-self: flex-start;
+            background: var(--card-inner-bg);
+            border: 1px solid var(--glass-border);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 1.7;
+            color: var(--text-primary);
+            margin-bottom: 25px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option-btn {
+            background: var(--card-inner-bg);
+            border: 1px solid var(--glass-border);
+            padding: 16px 22px;
+            border-radius: 14px;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="light"] .option-btn:hover:not(:disabled) {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* حالات الاختيارات صح / غلط */
+        .option-btn.correct-choice {
+            background: var(--success-bg) !important;
+            border-color: var(--success-color) !important;
+            color: var(--success-color) !important;
+            font-weight: 700;
+        }
+
+        .option-btn.incorrect-choice {
+            background: var(--danger-bg) !important;
+            border-color: var(--danger-color) !important;
+            color: var(--danger-color) !important;
+            font-weight: 700;
+        }
+
+        /* صندوق الملاحظات والتنبيهات التفاعلية الفورية */
+        .feedback-box {
+            margin-top: 25px;
+            padding: 18px 22px;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.6;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback-box.success {
+            background: var(--success-bg);
+            border-right: 4px solid var(--success-color);
+            color: var(--success-color);
+            display: block;
+        }
+
+        .feedback-box.danger {
+            background: var(--danger-bg);
+            border-right: 4px solid var(--danger-color);
+            color: var(--danger-color);
+            display: block;
+        }
+
+        /* أزرار التحكم والتحويل */
+        .control-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .next-btn {
+            background: var(--accent-color);
+            border: none;
+            color: #000;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px var(--accent-glow);
+            transition: all 0.2s ease;
+            display: none;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--accent-glow);
+        }
+
+        /* كرت النتيجة النهائي الشامل */
+        .result-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 45px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow);
+            display: none;
+            animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 100px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .status-badge.passed {
+            background: var(--success-bg);
+            color: var(--success-color);
+            border: 2px solid var(--success-color);
+        }
+
+        .status-badge.failed {
+            background: var(--danger-bg);
+            color: var(--danger-color);
+            border: 2px solid var(--danger-color);
+        }
+
+        .result-metric {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .result-details {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .restart-btn {
+            background: transparent;
+            border: 2px solid var(--text-primary);
+            color: var(--text-primary);
+            padding: 12px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .restart-btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-color);
+        }
+
+        /* زر المظهر الطافي */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        @media (max-width: 600px) {
+            .scoreboard { gap: 8px; }
+            .score-card { padding: 10px; }
+            .score-card .value { font-size: 1.2rem; }
+            .quiz-card { padding: 25px 15px; }
+            .question-text { font-size: 1.1rem; }
+            .option-btn { font-size: 0.95rem; padding: 14px 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+
+    <div class="container">
+        
+        <!-- نظام مراقبة وحساب النقاط الحي بالاعلى -->
+        <div class="scoreboard" id="scoreboardArea">
+            <div class="score-card correct">
+                <div class="label">الإجابات الصحيحة</div>
+                <div class="value" id="correctCount">0</div>
+            </div>
+            <div class="score-card progress-tracker">
+                <div class="label">التقدم الحالي</div>
+                <div class="value" id="progressText">1 / 50</div>
+            </div>
+            <div class="score-card incorrect">
+                <div class="label">الإجابات الخاطئة</div>
+                <div class="value" id="incorrectCount">0</div>
+            </div>
+        </div>
+
+        <header id="headerArea">
+            <h1>منظومة التدريب والاختبار الإلزامية</h1>
+            <p>مهرجان الكرازة الموحد - ركيزة العقيدة والطقس والروح</p>
+        </header>
+
+        <!-- واجهة الأسئلة النشطة -->
+        <div id="quizInterface">
+            <div class="quiz-card">
+                <div>
+                    <div class="section-badge" id="sectionBadge">جاري التحميل...</div>
+                    <div class="question-text" id="questionText">جاري تحميل السؤال...</div>
+                    <div class="options-container" id="optionsContainer">
+                        <!-- الخيارات تولد ديناميكياً -->
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="feedback-box" id="feedbackBox"></div>
+                    <div class="control-actions">
+                        <button class="next-btn" id="nextBtn" onclick="loadNextQuestion()">السؤال التالي ➔</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- واجهة النتائج الختامية الشاملة -->
+        <div class="result-card" id="resultInterface">
+            <div class="status-badge" id="statusBadge">ناجح</div>
+            <div class="result-metric" id="percentageValue">0%</div>
+            <div class="result-details" id="resultDetails">
+                لقد حصلت على درجة 0 من 50.
+            </div>
+            <button class="restart-btn" onclick="restartQuiz()">إعادة محاولة الاختبار</button>
+        </div>
+
+    </div>
+
+    <script>
+        // مصفوفة البيانات الضخمة التي تحتوي على الـ 50 سؤالاً كاملة وبدون أي تعديل أو اختصار في نصوصها
+        const questionsDatabase = [
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "تم اكتشاف الصليب المقدس على يد الملكة:",
+                options: ["أ) بربارة", "ب) هيلانة", "ج) دميانة", "د) يوأنا"],
+                correct: 1,
+                feedback: "إجابة ممتازة وصحيحة تضاف لرصيدك المعرفي الحاسم."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "تم اكتشاف الصليب في عام:",
+                options: ["أ) 326 م", "ب) 426 م", "ج) 526 م", "د) 626 م"],
+                correct: 0,
+                feedback: "تأريخ سليم ودقيق! تم اكتشاف الصليب عام 326 ميلادية."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "كم قرناً مضى على اكتشاف الصليب بحسب ما ورد في النص؟",
+                options: ["أ) 10 قرون", "ب) 14 قرناً", "ج) 17 قرناً", "د) 19 قرناً"],
+                correct: 2,
+                feedback: "حساب تاريخي بارع وهندسي متناسق."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "تعيد الكنيسة للصليب سنوياً:",
+                options: ["أ) مرة واحدة", "ب) مرتين", "ج) ثلاث مرات", "د) أربع مرات"],
+                correct: 1,
+                feedback: "رائع! الكنيسة تعيد له مرتين طقسياً وسنوياً."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "يستمد الصليب قوته وكرامته مباشرة من:",
+                options: ["أ) الذهب المصنوع منه", "ب) الملكة التي اكتشفته", "ج) السيد المسيح الذي علق عليه", "د) مكان دفنه"],
+                correct: 2,
+                feedback: "صحيح، فالمسيح المصلوب هو سر قوة الصليب وعمقه الحقيقي."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "تأسست المسيحية بالكامل على أساس:",
+                options: ["أ) الفلسفات اليونانية", "ب) الصليب وبالصليب", "ج) القوانين والتشريعات فقط", "د) المعجزات المادية المجردة"],
+                correct: 1,
+                feedback: "أحسنت الاختيار، الصليب هو عماد البشارة والمسيحية."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "يرى بعض المؤمنين الصليب كمفهوم لـ :",
+                options: ["أ) الترف والراحة", "ب) احتمال الضيقات والمتاعب", "ج) السيطرة المادية", "د) التخلي عن الإيمان"],
+                correct: 1,
+                feedback: "تفسير روحي عميق ومطابق للنصوص الكتابية المعتمدة."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "في الشاهد (عب 12 : 2)، احتمل يسوع الصليب مستهيناً بـ:",
+                options: ["أ) الألم", "ب) الموت", "ج) الخزي", "د) الأعداء"],
+                correct: 2,
+                feedback: "تذكر كتابي ممتاز للمحور الفكري العقيدي."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "الشاهد الكتابي 'الذي أفرح في آلامي لأجلكم' ورد في رسالة:",
+                options: ["أ) رومية", "ب) كولوسي 1 : 24", "ج) كورنثوس الأولى", "د) غلاطية"],
+                correct: 1,
+                feedback: "تحديد دقيق للشواهد والمدلولات الروحية المحورية."
+            },
+            {
+                section: "أولاً: الخلفية التاريخية والمفاهيم العامة",
+                q: "ينقسم الحديث عن الصليب في النص إلى:",
+                options: ["أ) محورين", "ب) 3 محاور", "ج) 4 محاور", "د) 5 محاور"],
+                correct: 1,
+                feedback: "صحيح! المحور العقيدي، والطقسي، والروحي."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "أوصى الله آدم وحواء في البدء بعدم الأكل من شجرة:",
+                options: ["أ) الحياة", "ب) معرفة الخير والشر", "ج) التين", "د) المعرفة المطلقة"],
+                correct: 1,
+                feedback: "برافو! شجرة معرفة الخير والشر كانت محط الوصية والامتحان."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "كانت النتيجة المباشرة لعصيان آدم وحواء لوصية الله هي:",
+                options: ["أ) مكافأة مادية", "ب) السقوط في الخطية واستحقاق حكم الموت", "ج) البقاء في الجنة للأبد", "د) نسيان الخطية"],
+                correct: 1,
+                feedback: "تحليل لاهوتي وعقيدي رصين ودقيق."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "أي مما يلي يُعد من نتائج الأكل من الشجرة المحرمة؟",
+                options: ["أ) زيادة القداسة البشرية", "ب) فساد طبيعتهما المقدسة", "ج) التخلص من الخطية الأصلية", "د) الارتفاع إلى رتبة الملائكة"],
+                correct: 1,
+                feedback: "إجابة صحيحة، فالحال المباشر بعد السقوط هو فساد الطبيعة البكر."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "ورثت البشرية عقب سقوط آدم وحواء:",
+                options: ["أ) الخطية الأصلية وفساد الطبيعة", "ب) البر الذاتي الكامل", "ج) الخلود الجسدي الفوري", "د) التحرر من الأحكام"],
+                correct: 0,
+                feedback: "صحيح تماماً، هذا هو جوهر عقيدتنا في وراثة آثار السقوط الحتمي."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "لماذا لم يكن ينفع أن يموت آدم كحل إلهي للمشكلة؟",
+                options: ["أ) لأن خطيته كانت بسيطة", "ب) لأن محبة الله لآدم كبيرة وعظيمة", "ج) لأن آدم رفض الموت", "د) لأن الطبيعة لم تكن فاسدة"],
+                correct: 1,
+                feedback: "معرفة ممتازة بدوافع التدبير الإلهي ومحبته اللانهائية."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "مسامحة الله لآدم مباشرة دون فداء وبلا مقابل 'لا تصح' لأنها:",
+                options: ["أ) تُضعف محبة الله", "ب) تخل بـ 'عدل الله'", "ج) تلغي وجود الشيطان", "د) تغير طبيعة الملائكة"],
+                correct: 1,
+                feedback: "رائع، لأن المسامحة المجردة تخل بصفة العدل الإلهي المطلق والمكتمل."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "كيف أصبحت الطبيعة البشرية بعد خطية آدم؟",
+                options: ["أ) كاملة وغير قابلة للخطأ", "ب) موبوءة وممتلئة بالخطايا", "ج) روحانية خالصة", "د) محايدة تماماً"],
+                correct: 1,
+                feedback: "إجابة لاهوتية صحيحة تبرز الحاجة الماسة لتدخل الفادي."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "الحل الوحيد والأقنومي للمشكلة كان هو:",
+                options: ["أ) التغاضي عن الخطية", "ب) الفداء (أن يموت فادٍ آخر بديل عن آدم)", "ج) فناء البشرية بالكامل", "د) تقديم ذبائح حيوانية دائمة"],
+                correct: 1,
+                feedback: "صحيح، الفداء النيابي هو المخطط والحل الأوحد."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "بموت الفادي البديل، يتحقق في آن واحد:",
+                options: ["أ) الغضب والرفض", "ب) العدل الإلهي وتتم الرحمة", "ج) الضعف البشري", "د) الحكم دون غفران"],
+                correct: 1,
+                feedback: "التقاء العدل والرحمة الفائق على عود الصليب المجيد."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "اشترط في الفادي أن يكون 'إنساناً' لأن:",
+                options: ["أ) الإنسان هو الأقوى", "ب) الإنسان هو الذي أخطأ", "ج) الملائكة رفضت الفداء", "د) الإنسان لا يموت"],
+                correct: 1,
+                feedback: "أصبت! الحكم صدر ضد الإنسان، فلا بد للفادي أن يحمل ذات الطبيعة ليوفي الدين."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "اشترط في الفادي أن يموت 'بإرادته' لأن:",
+                options: ["أ) الموت الإجباري لا قيمة له", "ب) أجرة الخطية هي الموت", "ج) الناموس يمنع الموت الاختياري", "د) الموت طوعاً يحافظ على الجسد فقط"],
+                correct: 1,
+                feedback: "صحيح، الموت الطوعي الاختياري يعكس الحب الحقيقي وأجرة حكم الناموس."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "اشترط في الفادي أن يكون 'بلا خطية' لأن:",
+                options: ["أ) الخاطئ يحتاج إلى من يفديه", "ب) الخطية تزيد من قوته", "ج) الأنبياء كانوا بلا خطية", "د) الشياطين تخاف من الخاطئ"],
+                correct: 0,
+                feedback: "إجابة صحيحة، فمن كان مديوناً لا يملك أن يسدد ديون الآخرين."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "اشترط في الفادي أن يكون 'غير محدود' لأن خطية آدم:",
+                options: ["أ) كانت لفترة زمنية قصيرة", "ب) موجهة ضد الله غير المحدود", "ج) لم تؤثر في الطبيعة البشرية", "د) تخص آدم وحده"],
+                correct: 1,
+                feedback: "لاهوتيات دقيقة! الخطية الموجهة ضد غير المحدود تستوجب كفارة غير محدودة."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "اشترط في الفادي أن يكون 'خالقاً' لكي يتمكن من:",
+                options: ["أ) تدمير العالم القديم", "ب) تجديد الطبيعة الفاسدة وإعادة خلقها", "ج) معاقبة الخطاة فوراً", "د) تغيير القوانين الزمنية"],
+                correct: 1,
+                feedback: "صحيح، فالخالق وحده يملك إعادة صياغة وخلق ما فسد."
+            },
+            {
+                section: "ثانياً: المحور العقيدي (السقوط وحتمية الفداء)",
+                q: "تم تحقيق الفداء بتجسد الله الكلمة وحلوله في أحشاء:",
+                options: ["أ) الست دميانة", "ب) العذراء مريم", "ج) أليصابات", "د) سالومة"],
+                correct: 1,
+                feedback: "سلامنا وتطويبنا الدائم لأم النور والسر المتجسد فيها."
+            },
+            {
+                section: "ثالثاً: أسباب اختيار ميتة الصليب وفكر القديس أثناسيوس",
+                q: "أي مما يلي يُعد سبباً رئيسياً لاختيار الموت 'بالصليب بالذات'؟",
+                options: ["أ) ليرفع اللعنة عنا ويحمل حكم الموت", "ب) لأنه الموت الأقل ألماً", "ج) لأنه كان مخصصاً للملوك", "د) لتجنب سفك الدماء"],
+                correct: 0,
+                feedback: "أصبت الهدف تماماً، ليصير لعنة عوضاً عنا ويرفع اللعنة."
+            },
+            {
+                section: "ثالثاً: أسباب اختيار ميتة الصليب وفكر القديس أثناسيوس",
+                q: "بحسب فكر القديس أثناسيوس، لماذا كان موت المسيح 'علنيّاً'؟",
+                options: ["أ) لإخافة الأعداء", "ب) للشهادة بتأكيد حقيقة القيامة التي ستأتي بعدها", "ج) لإثبات الضعف البشري", "د) تطبيقاً للقوانين الرومانية فقط"],
+                correct: 1,
+                feedback: "رؤية آبائية عميقة ومطابقة لفكر كتاب تجسد الكلمة."
+            },
+            {
+                section: "ثالثاً: أسباب اختيار ميتة الصليب وفكر القديس أثناسيوس",
+                q: "بحسب القديس أثناسيوس، مات المسيح مصلوباً ليحفظ جسده:",
+                options: ["أ) بعيداً عن القبر", "ب) سليماً كاملاً دون تمزيق أو تقطيع", "ج) مخفياً عن الأنظار", "د) متغيراً في الشكل فوراً"],
+                correct: 1,
+                feedback: "رائع، ليبقى الجسد متمسكاً بالوحدة والسلامة النبوية التامة."
+            },
+            {
+                section: "ثالثاً: أسباب اختيار ميتة الصليب وفكر القديس أثناسيوس",
+                q: "من أسباب اختيار الصليب عند أثناسيوس هو تطهير الجو والهواء من:",
+                options: ["أ) الأمراض والأوبئة", "ب) الأرواح الشريرة", "ج) الغبار والأتربة", "د) الطيور الجارحة"],
+                correct: 1,
+                feedback: "صحيح، هزيمة رئيس سلطان الهواء وتطهير المسكونة."
+            },
+            {
+                section: "ثالثاً: أسباب اختيار ميتة الصليب وفكر القديس أثناسيوس",
+                q: "مات المسيح على الصليب باسطاً ذراعيه لكي يجمع معاً:",
+                options: ["أ) الأبرار والأشرار في العقاب", "ب) الأمم واليهود في شخصه المحب", "ج) الملائكة والبشر في السماء الأولى", "د) التلاميذ والرسل فقط"],
+                correct: 1,
+                feedback: "احتضان كوني شامل ومحب للبشرية جمعاء."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "يُعتبر رشم الصليب إعلاناً لعقيدة الثالوث القدوس وهي:",
+                options: ["أ) ثلاثة آلهة منفصلة", "ب) الآب والابن والروح القدس إله واحد", "ج) أقنوم واحد بدون تمايز", "د) مخلوقات سماوية قديمة"],
+                correct: 1,
+                feedback: "إعلان التوحيد والتثليث في جوهر الحركة والرشم."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "رشم الصليب يعلن عقيدة التجسد والفداء وحلول الأقنوم في بطن:",
+                options: ["أ) الأرض", "ب) العذراء", "ج) الهيكل", "د) السماء"],
+                correct: 1,
+                feedback: "نزولاً من السماء للبطن الطاهر لتحقيق الخلاص الموعود."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "عند رشم الصليب نتذكر محبة الله الفائقة الذي:",
+                options: ["أ) ترك البشرية بدون محاسبة", "ب) سلم ابنه للموت على الصليب لأجلنا", "ج) عاقب البشرية بالفناء", "د) منع الشياطين من الحركة"],
+                correct: 1,
+                feedback: "لأنه هكذا أحب الله العالم حتى بذل ابنه الوحيد."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "يذكرنا رشم الصليب دوماً بـ:",
+                options: ["أ) خطايانا التي حملها المسيح عنا على الصليب", "ب) قوتنا الذاتية في محاربة الشر", "ج) خطايا الآخرين فقط", "د) تاريخ الملوك والأباطرة"],
+                correct: 0,
+                feedback: "تذكير دائم بالثمن المدفوع والنعمة المجانية الممنوحة."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "رشم الصليب هو إعلان التبعية للمصلوب والمجاهرة بالإيمان جهراً و:",
+                options: ["أ) استعلاء", "ب) انحناء", "ج) خوفاً", "د) صمتاً"],
+                correct: 1,
+                feedback: "بكل تواضع وانسحاق أمام عظمة المصلوب وفدائه."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "يمنح الصليب المؤمنين الغلبة و:",
+                options: ["أ) التميز للمسيحي بالمسيح", "ب) الثراء المادي الفوري", "ج) السلطة السياسية الزمنية", "د) التخلص من الموت الجسدي تماماً"],
+                correct: 0,
+                feedback: "تميز وهبة روحية سماوية لا تزول بمرور الزمان."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "الصليب في جوهره هو علامة المصالحة بين:",
+                options: ["أ) الإنسان والشيطان", "ب) الله والبشر", "ج) اليهود والأمم سياسياً", "د) الملائكة وبعضها"],
+                correct: 1,
+                feedback: "صحيح، إنه جسر الصلح والسلام الأبدي والكوني."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "ما نوع القوة التي يمنحها الصليب للمؤمنين بحسب النص؟",
+                options: ["أ) الجسدية المادية", "ب) الروحية", "ج) العسكرية", "د) الفلسفية"],
+                correct: 1,
+                feedback: "قوة روحية قادرة على هدم كل حصون وأفكار العدو."
+            },
+            {
+                section: "رابعاً: رشم الصليب وأبعاده التعليمية",
+                q: "نال المؤمنون كافة بركات العهد الجديد الروحية بفضل:",
+                options: ["أ) أعمالهم الذاتية فقط", "ب) صليب مخلصنا", "ج) القوانين الوضعية", "د) الفلسفات المعاصرة"],
+                correct: 1,
+                feedback: "كل البركات والخيرات تنبع وتفيض مباشرة من نبع الصليب."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "طقسياً، نبتدئ بالصليب في:",
+                options: ["أ) نهاية القداس فقط", "ب) كافة صلواتنا الكنسية والشخصية", "ج) المناسبات السنوية الحزينة فقط", "د) صلوات القديسين دون العامة"],
+                correct: 1,
+                feedback: "أول حركة ولفظ نبتدئ به يومنا وصلواتنا المنهجية الليتورجية."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "أين يوضع الصليب طقسياً في العمارة الكنسية الخارجية؟",
+                options: ["أ) تحت أرضية الهيكل", "ب) فوق منارات الكنائس", "ج) خلف الأبواب المغلقة", "د) على النوافذ الجانبية فقط"],
+                correct: 1,
+                feedback: "حارس منير وعلامة شاهقة ترفع فوق أعلى المنارات الكنسية."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "يُعلق الصليب طقسياً على:",
+                options: ["أ) الحوائط الخارجية فقط", "ب) صدور المؤمنين", "ج) كتب القراءة دون رشمها", "د) الأواني المكسورة"],
+                correct: 1,
+                feedback: "افتخار وحماية ملامسة لقلوب وصدور أبناء الكنيسة وشعبها."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "يُستخدم الصليب طقسياً في ممارسة جميع:",
+                options: ["أ) الاجتماعات الإدارية", "ب) الأسرار الكنسية", "ج) الحوارات الفلسفية", "د) القوانين المالية"],
+                correct: 1,
+                feedback: "لا سر يتم ولا بركة تكتمل إلا برشم وحضور علامة الصليب."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "يتخذ شكل الصليب كأحد الأنظمة والأشكال الأساسية في:",
+                options: ["أ) بناء الكنائس", "ب) طباعة الكتب المدنية", "ج) صياغة القوانين الزمنية", "د) تنظيم الحفلات العامة"],
+                correct: 0,
+                feedback: "أصبت! الهندسة المعمارية الكنسية تُبنى على مثال الصليب."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "تحتفل الكنيسة بتذكار تدشين كنيسة القيامة وتكريس الصليب في يوم:",
+                options: ["أ) 17 توت", "ب) 10 برمهات", "ج) 1 كيهك", "د) 12 بؤونة"],
+                correct: 0,
+                feedback: "صحيح، العيد الأول الفريد المبهج في مطلع السنة القبطية."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "العيد الثاني للصليب هو عيد 'اكتشاف الصليب المجيد' ويقع في:",
+                options: ["أ) 17 توت", "ب) 10 برمهات", "ج) 5 أمشير", "د) 20 مسرى"],
+                correct: 1,
+                feedback: "تأريخ طقسي رائع وثابت ممتد عبر العصور والأجيال الكنسية."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "عبارة 'شيري بيكستافروس' الواردة في النصوص الليتورجية تعني:",
+                options: ["أ) القوة للصليب", "ب) السلام للصليب (خشبة المسيح فخرنا)", "ج) المجد للقيامة", "د) الذبيحة المقدسة"],
+                correct: 1,
+                feedback: "تحية قبطية ليتورجية عبقة وفخورة بخشبة الخلاص."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "تذكر إبصالية يوم الجمعة أن الصليب أعطي علامة لـ :",
+                options: ["أ) الملوك الأباطرة فقط", "ب) عبيده الذين يخافونه", "ج) الخطاة الرافضين للتوبة", "د) الفلاسفة والمفكرين"],
+                correct: 1,
+                feedback: "نعم، 'أعطيت علامة لعبيدك الذين يخافونك'."
+            },
+            {
+                section: "خامساً: المحور الطقسي للصليب",
+                q: "أثناء القداس الإلهي، يوضع الصليب بشكل أساسي على:",
+                options: ["أ) الأبواب الخارجية", "ب) المذبح المقدس", "ج) كراسي الحاضرين", "د) ستر الهيكل من الخارج فقط"],
+                correct: 1,
+                feedback: "مركز العبادة والذبيحة والمصالحة الحية المكتملة."
+            },
+            {
+                section: "سادساً: المحور الروحي (مفهوم التجارب والآلام)",
+                q: "يسمح الله بالتجارب والآلام الروحية التي تؤدي إلى 'التوبة'، وتسمى تجارب:",
+                options: ["أ) الانتقام", "ب) التأديب", "ج) الفناء", "د) التزكية"],
+                correct: 1,
+                feedback: "إجابة صحيحة، فالتأديب الأبوي غايته ردهم تائبين لحضنه الدافئ."
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let totalCorrect = 0;
+        let totalIncorrect = 0;
+
+        // دالة تشغيل وتحميل السؤال الحالي
+        function loadQuestion() {
+            if (currentQuestionIdx >= questionsDatabase.length) {
+                showFinalResults();
+                return;
+            }
+
+            const currentQ = questionsDatabase[currentQuestionIdx];
+            
+            // تحديث العدادات الفورية بالاعلى وبنية الكرت
+            document.getElementById('progressText').innerText = `${currentQuestionIdx + 1} / ${questionsDatabase.length}`;
+            document.getElementById('sectionBadge').innerText = currentQ.section;
+            document.getElementById('questionText').innerText = currentQ.q;
+            
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            
+            const feedbackBox = document.getElementById('feedbackBox');
+            feedbackBox.className = 'feedback-box';
+            feedbackBox.style.display = 'none';
+            
+            document.getElementById('nextBtn').style.display = 'none';
+
+            // بناء خيارات الإجابة هندسياً وتفاعلياً
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => selectAnswer(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        // دالة التعامل مع معطيات اختيار المستخدم ومعالجتها الفورية
+        function selectAnswer(selectedIdx) {
+            const currentQ = questionsDatabase[currentQuestionIdx];
+            const container = document.getElementById('optionsContainer');
+            const buttons = container.getElementsByClassName('option-btn');
+            const feedbackBox = document.getElementById('feedbackBox');
+
+            // قفل كافة الأزرار لمنع التلاعب وتغيير النتيجة بعد الاختيار
+            for (let btn of buttons) {
+                btn.disabled = true;
+            }
+
+            if (selectedIdx === currentQ.correct) {
+                // معالجة اختيار صحيح
+                buttons[selectedIdx].classList.add('correct-choice');
+                totalCorrect++;
+                document.getElementById('correctCount').innerText = totalCorrect;
+                
+                feedbackBox.innerText = `✓ صحيح! ${currentQ.feedback}`;
+                feedbackBox.className = 'feedback-box success';
+            } else {
+                // معالجة اختيار خاطئ وإظهار رسائل التحذير الحازمة والموحدة للمهرجان
+                buttons[selectedIdx].classList.add('incorrect-choice');
+                buttons[currentQ.correct].classList.add('correct-choice'); // إبراز الصح للمستخدم للتعليم
+                totalIncorrect++;
+                document.getElementById('incorrectCount').innerText = totalIncorrect;
+                
+                feedbackBox.innerText = `✕ إجابة خاطئة! الإجابة الصحيحة هي: ${currentQ.options[currentQ.correct]}\n\nتنبيه حرج للغاية: تذكر أن حصد الأخطاء والفشل في تعدية وتخطي هذا الامتحان الأساسي سيحرمك تماماً ولن تتمكن من تسجيل أو ممارسة أي نشاط كنسي أو خدمي في مهرجان الكرازة!`;
+                feedbackBox.className = 'feedback-box danger';
+            }
+
+            document.getElementById('nextBtn').style.display = 'inline-block';
+        }
+
+        // الانتقال للسؤال التالي بنعومة وسلاسة
+        function loadNextQuestion() {
+            currentQuestionIdx++;
+            loadQuestion();
+        }
+
+        // عرض شاشة التقرير الختامي الشامل وحساب المعدل المئوي والنجاح من عدمه
+        function showFinalResults() {
+            document.getElementById('quizInterface').style.display = 'none';
+            document.getElementById('scoreboardArea').style.display = 'none';
+            document.getElementById('headerArea').style.display = 'none';
+            
+            const resultInterface = document.getElementById('resultInterface');
+            resultInterface.style.display = 'block';
+
+            const rawScore = totalCorrect; 
+            const percentage = Math.round((rawScore / 50) * 100);
+            
+            document.getElementById('percentageValue').innerText = `${percentage}%`;
+            
+            const statusBadge = document.getElementById('statusBadge');
+            const detailsBox = document.getElementById('resultDetails');
+
+            // شرط النجاح الإلزامي المعتمد من 50% فما فوق (أي 25 درجة صحيحة على الأقل من 50)
+            if (percentage >= 50) {
+                statusBadge.innerText = "ناجح ومؤهل للتسجيل";
+                statusBadge.className = "status-badge passed";
+                detailsBox.innerHTML = `مبارك لك! لقد نلت درجة <strong style='color:var(--success-color); font-size:1.5rem;'>${rawScore}</strong> من أصل 50 درجة كاملة.<br>أنت الآن مسجل رسمياً ومؤهل لدخول كافة الأنشطة والخدمات والفعاليات الجماعية بمهرجان الكرازة بنجاح وبدون قيود.`;
+            } else {
+                statusBadge.innerText = "راسب - غير مؤهل للتسجيل";
+                statusBadge.className = "status-badge failed";
+                detailsBox.innerHTML = `للأسف الشديد، لقد حصلت على درجة <strong style='color:var(--danger-color); font-size:1.5rem;'>${rawScore}</strong> من 50.<br><span style='color:var(--danger-color); font-weight:800;'>تحذير إلزامي: بناءً على هذه النتيجة، فقد فشلت في عبور الامتحان الأساسي الموحد، وبالتالي يقع عليك الحظر ولن تتمكن من تسجيل أو تفعيل أي نشاط أو خدمة في مهرجان الكرازة الحالي حتى تعيد الدراسة وتجتاز الاختبار بنجاح.</span>`;
+            }
+        }
+
+        // دالة تصفير العدادات وإعادة تشغيل محاكاة الاختبار من جديد
+        function restartQuiz() {
+            currentQuestionIdx = 0;
+            totalCorrect = 0;
+            totalIncorrect = 0;
+            
+            document.getElementById('correctCount').innerText = '0';
+            document.getElementById('incorrectCount').innerText = '0';
+            
+            document.getElementById('quizInterface').style.style = '';
+            document.getElementById('quizInterface').style.display = 'block';
+            document.getElementById('scoreboardArea').style.display = 'grid';
+            document.getElementById('headerArea').style.display = 'block';
+            document.getElementById('resultInterface').style.display = 'none';
+            
+            loadQuestion();
+        }
+
+        // نظام تبديل المظهر الزجاجي الفخم تلقائياً وديناميكياً
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+
+        // تشغيل واجهة السؤال الأول بمجرد فتح الصفحة تلقائياً
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
