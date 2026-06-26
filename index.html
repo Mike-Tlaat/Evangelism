@@ -297,6 +297,43 @@
           0 0 40px rgba(245, 158, 11, 0.12);
       }
 
+      /* زر المشاركة الذكي المضاف حديثاً للكروت */
+      .share-btn {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: var(--transition-smooth);
+      }
+
+      .share-btn:hover {
+        background: rgba(245, 158, 11, 0.2);
+        border-color: var(--secondary-accent);
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        transform: scale(1.1);
+      }
+
+      .share-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--text-sub);
+        fill: none;
+        transition: var(--transition-smooth);
+      }
+
+      .share-btn:hover svg {
+        stroke: var(--secondary-accent);
+      }
+
       /* حاوية الأيقونات المتوهجة بشكل رائع */
       .icon-wrapper {
         width: 64px;
@@ -347,6 +384,7 @@
         color: var(--text-main);
         line-height: 1.4;
         transition: var(--transition-smooth);
+        padding-left: 20px; /* ترك مساحة مريحة لزر المشاركة في اليسار */
       }
 
       .modern-card:hover .card-title {
@@ -461,6 +499,10 @@
           flex-direction: column;
           text-align: center;
         }
+        .share-btn {
+          top: 20px;
+          left: 20px;
+        }
       }
     </style>
   </head>
@@ -568,6 +610,9 @@
             class="modern-card action-link"
             onclick="openLink('Basic_lesson/Basic_lesson.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'شرح الدرس الأساسي', 'Basic_lesson/Basic_lesson.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -587,6 +632,9 @@
             class="modern-card action-link"
             onclick="openLink('Basic_lesson/mcq.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'أسئلة اختبارية على الدرس الأساسي', 'Basic_lesson/mcq.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="9 11 12 14 22 4"></polyline>
@@ -669,6 +717,9 @@
             class="modern-card action-link"
             onclick="openLink('secondary/level1.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات ثانوي - خاص بالكرازة', 'secondary/level1.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
@@ -750,6 +801,9 @@
             class="modern-card action-link"
             onclick="openLink('youths/level1.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات شباب - المستوى الأول', 'youths/level1.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -757,7 +811,7 @@
             </div>
             <div class="card-title">المستوى الأول</div>
             <div class="card-description">
-              مقرر وتدريبات المستوى التدريجي الأول للشباب.
+              مقرر وتدريبات المستوى التدريجي الأول للشب.
             </div>
             <div class="card-arrow-indicator">
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
@@ -768,6 +822,9 @@
             class="modern-card action-link"
             onclick="openLink('youths/level2.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات شباب - المستوى الثاني', 'youths/level2.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -786,6 +843,9 @@
             class="modern-card action-link"
             onclick="openLink('youths/level3.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات شباب - المستوى الثالث', 'youths/level3.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>
@@ -809,6 +869,9 @@
             class="modern-card action-link"
             onclick="openLink('secondary/level1.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات ثانوي - المستوى الأول', 'secondary/level1.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="13 17 18 12 13 7"></polyline>
@@ -828,6 +891,9 @@
             class="modern-card action-link"
             onclick="openLink('secondary/level2.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات ثانوي - المستوى الثاني', 'secondary/level2.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="13 17 18 12 13 7"></polyline>
@@ -847,6 +913,9 @@
             class="modern-card action-link"
             onclick="openLink('secondary/level3.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات ثانوي - المستوى الثالث', 'secondary/level3.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="13 17 18 12 13 7"></polyline>
@@ -866,6 +935,9 @@
             class="modern-card action-link"
             onclick="openLink('secondary/level4.html')"
           >
+            <button class="share-btn" onclick="shareCard(event, 'محفوظات ثانوي - المستوى الرابع', 'secondary/level4.html')" title="مشاركة">
+              <svg viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+            </button>
             <div class="icon-wrapper">
               <svg viewBox="0 0 24 24" stroke-width="2">
                 <polyline points="13 17 18 12 13 7"></polyline>
@@ -962,6 +1034,37 @@
       // تشغيل وتوجيه المسارات المباشرة
       function openLink(url) {
         window.location.href = url;
+      }
+
+      // دالة المشاركة الذكية المضافة حديثاً للكروت التي تفتح ملفات
+      function shareCard(event, cardTitle, fileUrl) {
+        // منع انتشار الحدث لكي لا يفتح الملف فور الضغط على زر المشاركة
+        event.stopPropagation();
+
+        // تحويل المسار النسبي إلى مسار مطلق متكامل للمشاركة بشكل صحيح
+        const absoluteUrl = new URL(fileUrl, window.location.href).href;
+        
+        const shareData = {
+          title: cardTitle,
+          text: `شاهد ملف "${cardTitle}" من منصة مهرجان الكرازة التعليمية:`,
+          url: absoluteUrl
+        };
+
+        // التحقق مما إذا كان المتصفح يدعم ميزة المشاركة الذكية (الهواتف الذكية)
+        if (navigator.share) {
+          navigator.share(shareData)
+            .catch((error) => console.log('فشلت عملية المشاركة:', error));
+        } else {
+          // بديل متطور للحواسب: نسخ النص والرابط تلقائياً للحافظة لإرساله يدوياً
+          const textToCopy = `${shareData.text}\n${shareData.url}`;
+          navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+              alert(`تم نسخ رابط "${cardTitle}" إلى الحافظة بنجاح! يمكنك لصقه ومشاركته الآن.`);
+            })
+            .catch((err) => {
+              alert('عذراً، حدث خطأ أثناء محاولة نسخ الرابط.');
+            });
+        }
       }
     </script>
   </body>
